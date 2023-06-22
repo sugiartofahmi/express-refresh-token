@@ -3,9 +3,9 @@ import jwt from "jsonwebtoken";
 
 config();
 
-const jwtSecret = process.env.ACCESS_TOKEN_SECRET;
+const jwtSecret = process.env.REFRESH_TOKEN_SECRET;
 
-const auth = (req, res, next) => {
+const verifyRefreshToken = (req, res, next) => {
   try {
     const header = req.header("Authorization");
 
@@ -46,4 +46,4 @@ const auth = (req, res, next) => {
   }
 };
 
-export default auth;
+export default verifyRefreshToken;

@@ -143,30 +143,18 @@ export const refreshToken = async (req, res) => {
         message: "Invalid refresh token",
       });
     }
-    jwt.verify(
-      token.refreshToken,
-      process.env.REFRESH_TOKEN_SECRET,
-      async (error, decoded) => {
-        if (error) {
-          return res
-            .status(401)
-            .json({ status: "failed", token, message: "Token is not valid" });
-        } else {
-          const user = decoded;
-          const newAccessToken = jwt.sign(
-            { id: user.id, email: user.email },
-            process.env.ACCESS_TOKEN_SECRET,
-            {
-              expiresIn: "1m",
-            }
-          );
-          res.status(200).json({
-            status: "success",
-            accessToken: newAccessToken,
-          });
-        }
+
+    const newAccessToken = jwt.sign(
+      { id: req.user.id, email: req.user.email },
+      process.env.ACCESS_TOKEN_SECRET,
+      {
+        expiresIn: "1m",
       }
     );
+    res.status(200).json({
+      status: "success",
+      accessToken: newAccessToken,
+    });
   } catch (error) {
     console.info(error.message);
     res.status(500).json({
