@@ -8,20 +8,20 @@ const jwtSecret = process.env.REFRESH_TOKEN_SECRET;
 
 const verifyRefreshToken = async (req, res, next) => {
   try {
-    const { refreshToken } = req.body;
-    if (!refreshToken) {
+    const { refresh_token } = req.body;
+    if (!refresh_token) {
       return res.status(401).json({
         status: "failed",
         message: "Token not provided",
       });
     }
-    jwt.verify(refreshToken, jwtSecret, async (error, decoded) => {
+    jwt.verify(refresh_token, jwtSecret, async (error, decoded) => {
       if (error) {
         return res
           .status(401)
           .json({ status: "failed", message: "Token is not valid" });
       } else {
-        const token = await Token.findOne({ refreshToken });
+        const token = await Token.findOne({ refreshToken: refresh_token });
         if (!token) {
           return res.status(401).json({
             status: "failed",

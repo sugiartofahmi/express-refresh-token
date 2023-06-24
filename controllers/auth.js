@@ -98,8 +98,8 @@ export const login = async (req, res) => {
 
     res.status(200).json({
       status: "success",
-      accessToken,
-      refreshToken,
+      access_token: accessToken,
+      refresh_token: refreshToken,
     });
   } catch (error) {
     console.info(error.message);
@@ -112,8 +112,8 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    const { refreshToken } = req.body;
-    const token = await Token.findOneAndDelete({ refreshToken });
+    const { refresh_token } = req.body;
+    const token = await Token.findOneAndDelete({ refreshToken: refresh_token });
     if (!token) {
       return res.status(401).json({
         status: "failed",
@@ -138,7 +138,7 @@ export const refreshToken = async (req, res) => {
   try {
     res.status(200).json({
       status: "success",
-      accessToken: await generateToken.accessToken(req.user),
+      access_token: await generateToken.accessToken(req.user),
     });
   } catch (error) {
     console.info(error.message);

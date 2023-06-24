@@ -43,3 +43,168 @@ Learn to create authentication with express js
   ```bash
     JWT_SECRET = jwtscrect
   ```
+
+# API Spec
+
+## Register
+
+Endpoint : POST /auth/register
+
+Request Body :
+
+```json
+{
+  "email": "test@gmail.com",
+  "password": "passwordmu",
+  "confirmPassword": "passwordmu",
+  "name": "Nama Kamu"
+}
+```
+
+Response Body Success :
+
+```json
+{
+  "status": "success",
+  "user": {
+    "name": "Nama Kamu",
+    "email": "test@gmail.com",
+    "password": "passwordmu"
+  }
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "status": "failed",
+  "message": "email already exist, please login"
+}
+```
+
+```json
+{
+  "status": "failed",
+  "message": "password not match"
+}
+```
+
+## Login
+
+Endpoint : POST /auth/login
+
+Request Body :
+
+```json
+{
+  "email": "test@gmail.com",
+  "password": "passwordmu"
+}
+```
+
+Response Body Success :
+
+```json
+{
+  "status": "success",
+  "access_token": "unique-token",
+  "refresh_token": "unique-token
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "status": "failed",
+  "message": "account not found"
+}
+```
+
+```json
+{
+  "status": "failed",
+  "message": "Wrong  password"
+}
+```
+
+## Refresh Token
+
+Endpoint : POST /auth/refreshToken
+
+Request Body :
+
+```json
+{
+  "refresh_token": "unique-token"
+}
+```
+
+Response Body Success :
+
+```json
+{
+  "status": "success",
+  "access_token": "unique-token"
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "status": "failed",
+  "message": "Token is not valid"
+}
+```
+
+## Get User
+
+Endpoint : GET /user/me
+
+Headers :
+
+- Authorization :Bearer token
+
+Response Body Success:
+
+```json
+{
+  "status": "success",
+  "data": {
+    "name": "Nama Kamu",
+    "email": "test@gmail.com"
+  }
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "status": "failed",
+  "message": "Token is not valid"
+}
+```
+
+## Logout User API
+
+Endpoint : POST /auth/logout
+
+Request Body :
+
+```json
+{
+  "refresh_token": "unique-token"
+}
+```
+
+Response Body Error :
+
+```json
+{
+  "status": "failed",
+  "message": "Invalid token"
+}
+```
