@@ -56,7 +56,6 @@ Request Body :
 {
   "email": "test@gmail.com",
   "password": "passwordmu",
-  "confirmPassword": "passwordmu",
   "name": "Nama Kamu"
 }
 ```
@@ -67,9 +66,9 @@ Response Body Success :
 {
   "status": "success",
   "user": {
+    "_id": "id",
     "name": "Nama Kamu",
-    "email": "test@gmail.com",
-    "password": "passwordmu"
+    "email": "test@gmail.com"
   }
 }
 ```
@@ -108,8 +107,15 @@ Response Body Success :
 ```json
 {
   "status": "success",
-  "access_token": "unique-token",
-  "refresh_token": "unique-token"
+  "user": {
+    "_id": "id",
+    "name": "Nama Kamu",
+    "email": "test@gmail.com"
+  },
+  "token": {
+    "access_token": "unique-token",
+    "refresh_token": "unique-token"
+  }
 }
 ```
 
@@ -131,7 +137,7 @@ Response Body Error :
 
 ## Refresh Token
 
-Endpoint : POST /auth/refreshToken
+Endpoint : POST /auth/refresh
 
 Request Body :
 
@@ -172,7 +178,8 @@ Response Body Success:
 ```json
 {
   "status": "success",
-  "data": {
+  "user": {
+    "_id": "id",
     "name": "Nama Kamu",
     "email": "test@gmail.com"
   }
@@ -197,6 +204,15 @@ Request Body :
 ```json
 {
   "refresh_token": "unique-token"
+}
+```
+
+Response Body Success:
+
+```json
+{
+  "status": "success",
+  "message": "Logged Out Sucessfully"
 }
 ```
 
