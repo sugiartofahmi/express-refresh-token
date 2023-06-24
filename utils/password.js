@@ -3,7 +3,7 @@ import bcryptjs from "bcryptjs";
 export const encryptPassword = async (password) => {
   const salt = await bcryptjs.genSalt(10);
   const hashPassword = await bcryptjs.hash(password, salt);
-  return await hashPassword;
+  return hashPassword;
 };
 
 export const comparePassword = async (inputPassword, userPassword) => {
