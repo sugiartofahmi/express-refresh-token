@@ -23,7 +23,7 @@ const generateToken = {
     if (userRefreshToken) {
       await Token.findOneAndUpdate(
         { userId: user._id },
-        { token },
+        { refreshToken: token },
         {
           new: true,
           runValidators: true,
