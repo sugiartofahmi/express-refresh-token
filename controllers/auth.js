@@ -6,7 +6,7 @@ import generateToken from "../utils/token.js";
 
 export const register = async (req, res) => {
   try {
-    const { name, email, password, confirmPassword } = req.body;
+    const { name, email, password } = req.body;
     if (!name) {
       return res.status(400).json({
         status: "failed",
@@ -25,12 +25,7 @@ export const register = async (req, res) => {
         message: "password cannot be empty",
       });
     }
-    if (!confirmPassword) {
-      return res.status(400).json({
-        status: "failed",
-        message: "confirm password cannot be empty",
-      });
-    }
+
     const isEmailExist = await Users.findOne({ email }).exec();
     if (isEmailExist) {
       return res.status(400).json({
@@ -38,12 +33,7 @@ export const register = async (req, res) => {
         message: "email already exist, please login",
       });
     }
-    if (password !== confirmPassword) {
-      return res.status(400).json({
-        status: "failed",
-        message: "password not match",
-      });
-    }
+
     const user = await Users.create({
       name,
       email,
@@ -98,8 +88,15 @@ export const login = async (req, res) => {
 
     res.status(200).json({
       status: "success",
-      access_token: accessToken,
-      refresh_token: refreshToken,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+      token: {
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      },
     });
   } catch (error) {
     console.info(error.message);
