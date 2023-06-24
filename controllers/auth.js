@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import Token from "../models/refreshToken.js";
 import Users from "../models/user.js";
 import { comparePassword, encryptPassword } from "../utils/password.js";
-import { generateToken } from "../utils/token.js";
+import generateToken from "../utils/token.js";
 
 export const register = async (req, res) => {
   try {
@@ -93,7 +93,9 @@ export const login = async (req, res) => {
         message: "Wrong  password",
       });
     }
-    const { accessToken, refreshToken } = await generateToken(user);
+    const refreshToken = await generateToken.refreshToken(user);
+    const accessToken = await generateToken.accessToken(user);
+
     res.status(200).json({
       status: "success",
       accessToken,
@@ -110,8 +112,8 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    const userToken = req.header("Authorization").split(" ")[1];
-    const token = await Token.findOneAndDelete({ refreshToken: userToken });
+    const { refreshToken } = req.body;
+    const token = await Token.findOneAndDelete({ refreshToken });
     if (!token) {
       return res.status(401).json({
         status: "failed",
@@ -134,26 +136,9 @@ export const logout = async (req, res) => {
 
 export const refreshToken = async (req, res) => {
   try {
-    const userToken = req.header("Authorization").split(" ")[1];
-
-    const token = await Token.findOne({ refreshToken: userToken });
-    if (!token) {
-      return res.status(401).json({
-        status: "failed",
-        message: "Invalid refresh token",
-      });
-    }
-
-    const newAccessToken = jwt.sign(
-      { id: req.user.id, email: req.user.email },
-      process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: "1m",
-      }
-    );
     res.status(200).json({
       status: "success",
-      accessToken: newAccessToken,
+      accessToken: await generateToken.accessToken(req.user),
     });
   } catch (error) {
     console.info(error.message);
