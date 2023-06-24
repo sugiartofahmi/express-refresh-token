@@ -109,7 +109,7 @@ Response Body Success :
 {
   "status": "success",
   "access_token": "unique-token",
-  "refresh_token": "unique-token
+  "refresh_token": "unique-token"
 }
 ```
 
@@ -188,7 +188,7 @@ Response Body Error :
 }
 ```
 
-## Logout User API
+## Logout
 
 Endpoint : POST /auth/logout
 
